@@ -31,11 +31,11 @@ while PilihanMisi < 1 or PilihanMisi > 4:
 if PilihanMisi == 1:
     PersentaseBonus = 0.02
 elif PilihanMisi == 2:
-        PersentaseBonus = 0.05
+    PersentaseBonus = 0.05
 elif PilihanMisi == 3:
-            PersentaseBonus = 0.08
+    PersentaseBonus = 0.08
 elif PilihanMisi == 4:
-                PersentaseBonus = 0.12
+    PersentaseBonus = 0.12
 
 JumlahBonus = RewardDasar * PersentaseBonus
 RewardAkhir = RewardDasar + JumlahBonus
