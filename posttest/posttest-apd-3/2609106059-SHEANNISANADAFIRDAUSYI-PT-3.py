@@ -20,7 +20,6 @@ print("2. Misi Sulit (Bonus 5%)")
 print("3. Misi Kritis (Bonus 8%)")
 print("4. Misi Penyelamatan Bumi (Bonus 12%)")
 print("-----------------------------------")
-print("Masukkan Pilihan Misi (1-4): ")
 
 PilihanMisi = int(input("Masukkan Pilihan Misi (1-4): "))
 
