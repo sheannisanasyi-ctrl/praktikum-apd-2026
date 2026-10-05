@@ -5,7 +5,7 @@ loginBerhasil = False
 
 while kesempatan > 0 and not loginBerhasil:
     print(f"\nKesempatan Login: {kesempatan}")
-    userInput = input("Masukkan  Username :").lower()
+    userInput = input("Masukkan  Username : ").lower()
     passwordInput = input("Masukkan Password : ")
     
     if userInput == userBenar and passwordInput == passwordBenar:
@@ -13,7 +13,7 @@ while kesempatan > 0 and not loginBerhasil:
         loginBerhasil = True
     else:
         if userInput !=userBenar and passwordInput == passwordBenar:
-            print("Login gagal!Username salah!")
+            print("Login gagal! Username salah!")
         elif userInput == userBenar and passwordInput != passwordBenar:
                 print("Login gagal! Password salah!")
         else:
