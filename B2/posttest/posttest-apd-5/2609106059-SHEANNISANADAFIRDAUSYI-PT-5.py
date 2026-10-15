@@ -59,14 +59,21 @@ while True:
             usernameBaru = input("Username: ")
             passwordBaru = input("Password: ")
 
-            if usernameBaru != "":
-                if passwordBaru != "":
-                    dataPengguna.append([usernameBaru, passwordBaru, "user"])
-                    print("Akun baru berhasil dibuat! Silakan login")
-                else:
-                    print("Password tidak boleh kosong!")
-            else:
+            usernameSudahAda = False
+            for akun in dataPengguna:
+                if akun[0] == usernameBaru:
+                    usernameSudahAda = True
+
+
+            if usernameBaru == "":
                 print("Username tidak boleh kosong!")
+            elif passwordBaru == "":
+                print("Password tidak boleh kosong!")
+            elif usernameSudahAda:
+                print("Username sudah digunakan!")
+            else:
+                dataPengguna.append([usernameBaru, passwordBaru, "user"])
+                print("Akun baru berhasil dibuat! Silakan login.")
         
             input("\nTekan Enter untuk melanjutkan...")
 
@@ -88,7 +95,8 @@ while True:
 
         if pilihanMenu == "1":
             print("\n--- DATA OBAT ---")
-            print(f"{'No':<4} | {'Nama Obat':<15} | {'Stok Awal':<9} | {'Tanggal Kadaluarsa':<10} | {'Jumlah Dikonsumsi':<9} | {'Sisa Stok'}")
+            print(f"{'No':<4} | {'Nama Obat':<15} | {'Stok Awal':<9} | " 
+                f"{'Tanggal Kadaluarsa':<18} | {'Jumlah Dikonsumsi':<17} | {'Sisa Stok'}")
             print("-" * 87)
 
             i = 0
@@ -97,31 +105,63 @@ while True:
                 stokAwal = dataObat[i][1]
                 tanggalKadaluarsa = dataObat[i][2]
                 dikonsumsi = dataObat[i][3]
-
                 stokAkhir = stokAwal - dikonsumsi
 
-                print(f"{i+1:<3}. | {nama:<15} | {str(stokAwal):<9} | {str(tanggalKadaluarsa):<18} | {str(dikonsumsi):<17} | {stokAkhir}")
+                print(f"{i+1:<4}. | {nama:<15} | {stokAwal:<9} | "
+                    f"{tanggalKadaluarsa:<18} | {dikonsumsi:<17} | {stokAkhir}")
                 i = i + 1
+
             input("\nTekan Enter untuk kembali...")
 
         elif pilihanMenu == "2":
             if role == "admin":
                 print("\n--- TAMBAH DATA OBAT ---")
-                namaObat = input("Nama Obat: ")
-                stokAwal = int(input("Stok Awal: "))
-                TanggalKadaluarsa = input ("Tanggal Kadaluarsa: ")
-                konsumsi = int(input("Jumlah yang sudah dikonsumsi: "))
 
-                dataObat.append([namaObat, stokAwal, TanggalKadaluarsa, konsumsi])
+                namaObat = input("Nama Obat: ")
+                while namaObat == "":
+                    print("Nama obat tidak boleh kosong!")
+                    namaObat = input("Nama Obat: ")
+
+                stokInput = input("Stok Awal: ")
+                while not stokInput.isdigit():
+                    print("Stok harus berupa angka!")
+                    stokInput = input("Stok Awal: ")
+                stokAwal = int(stokInput)
+
+                tanggalValid = False
+                while not tanggalValid:
+                    tanggalKadaluarsa = input("Tanggal Kadaluarsa (YYYY-MM-DD): ")
+                    if (len(tanggalKadaluarsa) == 10
+                        and tanggalKadaluarsa[4] == "-"
+                        and tanggalKadaluarsa[7] == "-"
+                        and tanggalKadaluarsa[:4].isdigit()
+                        and tanggalKadaluarsa[5:7].isdigit()
+                        and tanggalKadaluarsa[8:].isdigit()):
+                        bulan = int(tanggalKadaluarsa[5:7])
+                        hari = int(tanggalKadaluarsa[8:])
+                        if bulan >= 1 and bulan <= 12 and hari >= 1 and hari <= 31:
+                            tanggalValid = True
+                    if not tanggalValid:
+                        print("Format tanggal tidak valid! Contoh: 2000-01-31")
+
+                konsumsiInput = input("Jumlah yang sudah dikonsumsi: ")
+                while not konsumsiInput.isdigit() or int(konsumsiInput) > stokAwal:
+                    print("Harus berupa angka dan tidak boleh melebihi stok awal!")
+                    konsumsiInput = input("Jumlah yang sudah dikonsumsi: ")
+                konsumsi = int(konsumsiInput)
+                        
+                dataObat.append([namaObat, stokAwal, tanggalKadaluarsa, konsumsi])
                 print("Data obat berhasil ditambahkan!")
             else:
                 print("\nAkses ditolak! Menu ini khusus admin.")
+
             input("\nTekan Enter untuk kembali...")
 
         elif pilihanMenu == "3":
             if role == "admin":
                 print("\n--- UBAH DATA OBAT ---")
-                print(f"{'No':<4} | {'Nama Obat':<15} | {'Stok Awal':<9} | {'Tanggal Kadaluarsa':<10} | {'Jumlah Dikonsumsi':<9} | {'Sisa Stok'}")
+                print(f"{'No':<4} | {'Nama Obat':<15} | {'Stok Awal':<9} | "
+                    f"{'Tanggal Kadaluarsa':<18} | {'Jumlah Dikonsumsi':<17} | {'Sisa Stok'}")
                 print("-" * 87)
 
                 i = 0
@@ -132,43 +172,109 @@ while True:
                     dikonsumsi = dataObat[i][3]
                     stokAkhir = stokAwal - dikonsumsi
                     
-                    print(f"{i+1:<3} | {nama:<16} | {str(stokAwal):<9} | {str(tanggalKadaluarsa):<18} | {str(dikonsumsi):<17} | {stokAkhir}")
+                    print(f"{i+1:<4} | {nama:<15} | {stokAwal:<9} | "
+                        f"{tanggalKadaluarsa:<18} | {dikonsumsi:<17} | {stokAkhir}")
                     i = i + 1
 
-                indeks = int(input("Pilih nomor obat yang mau diubah: ")) - 1
+                indeksInput = input("Pilih nomor obat yang mau diubah: ")
 
-                if indeks >= 0:
-                    if indeks < len(dataObat):
-                        print(f"Mengubah data untuk: {dataObat[indeks][0]}")
+                if not indeksInput.isdigit():
+                    print("Input harus berupa angka!")
+                else:
+                    indeks = int(indeksInput) - 1
+
+                    if indeks >= 0 and indeks < len(dataObat):
+                        print(f"\nMengubah data untuk: {dataObat[indeks][0]}")
                         print("1. Ubah Nama Obat")
                         print("2. Ubah Stok Awal")
                         print("3. Ubah Tanggal Kadaluarsa")
                         print("4. Ubah Jumlah Dikonsumsi")
                         print("5. Ubah Seluruh Data")
-                        pilihUbah = input("Pilih bagian yang mau diubah (1-5)")
+                        pilihUbah = input("Pilih bagian yang mau diubah (1-5): ")
 
                         if pilihUbah == "1":
                             namaBaru = input("Masukkan nama obat: ")
+                            while namaBaru == "":
+                                print("Nama obat tidak boleh kosong!")
+                                namabaru = input("Masukkan nama obat: ")
+
                             dataObat[indeks][0] = namaBaru
                             print("Nama obat berhasil diperbarui!")
+
                         elif pilihUbah == "2":
-                            stokBaru = int(input("Masukkan jumlah stok: "))
+                            stokInput = input("Masukkan jumlah stok: ")
+                            while not stokInput.isdigit() or int(stokInput) < dataObat[indeks][3]:
+                                print("Harus berupa angka dan tidak boleh kurang dari jumlah dikonsumsi!")
+                                stokInput = input("Masukkan jumlah stok: ")
+                            stokBaru = int(stokInput)
+
                             dataObat[indeks][1] = stokBaru
                             print("Stok obat berhasil diperbarui!")
+
                         elif pilihUbah == "3":
-                            kadaluarsaBaru = input("Masukkan tanggal kadaluarsa: ")
+                            tanggalValid = False
+                            while not tanggalValid:
+                                kadaluarsaBaru = input("Masukkan tanggal kadaluarsa (YYYY-MM-DD): ")
+                                if (len(kadaluarsaBaru) == 10
+                                    and kadaluarsaBaru[4] == "-"
+                                    and kadaluarsaBaru[7] == "-"
+                                    and kadaluarsaBaru[:4].isdigit()
+                                    and kadaluarsaBaru[5:7].isdigit()
+                                    and kadaluarsaBaru[8:].isdigit()):
+                                    bulan = int(kadaluarsaBaru[5:7])
+                                    hari = int(kadaluarsaBaru[8:])
+                                    if bulan >= 1 and bulan <= 12 and hari >= 1 and hari <= 31:
+                                        tanggalValid = True
+                                if not tanggalValid:
+                                    print("Format tanggal tidak valid! Contoh: 2000-01-31")
+                                    
                             dataObat[indeks][2] = kadaluarsaBaru
                             print("Tanggal kadaluarsa berhasil diperbarui!")
+
                         elif pilihUbah == "4":
-                            konsumsiBaru = int(input("Masukkan  jumlah obat yang sudah dikonsumsi: "))
-                            dataObat[indeks][3]
+                            konsumsiInput = input("Masukkan jumlah obat yang sudah dikonsumsi: ")
+                            while not konsumsiInput.isdigit() or int(konsumsiInput) > dataObat[indeks][1]:
+                                print("Harus berupa angka dan tidak boleh melebihi stok awal!")
+                                konsumsiInput = input("Masukkan jumlah obat yang sudah dikonsumsi: ")
+                            konsumsiBaru = int(konsumsiInput)
+
+                            dataObat[indeks][3] = konsumsiBaru
                             print("Jumlah dikonsumsi berhasil diperbarui!")
+
                         elif pilihUbah == "5":
                             namaBaru = input("Masukkan nama obat: ")
-                            stokBaru = int(input("Masukkan jumlah stok: "))
-                            kadaluarsaBaru = int(input("Masukkan tanggal kadaluarsa: "))
-                            konsumsiBaru = int(input("Masukkan jumlah obat yang sudah dikonsumsi: "))
-                            
+                            while namaBaru == "":
+                                print("Nama obat tidak boleh kosong!")
+                                namaBaru = input("Masukkan nama obat: ")
+
+                            stokInput = input("Masukkan jumlah stok: ")
+                            while not stokInput.isdigit():
+                                print("Stok harus berupa angka!")
+                                stokInput = input("Masukkan jumlah stok: ")
+                            stokBaru = int(stokInput)
+
+                            tanggalValid = False
+                            while not tanggalValid:
+                                kadaluarsaBaru = input("Masukkan tanggal kadaluarsa (YYYY-MM-DD): ")
+                                if (len(kadaluarsaBaru) == 10
+                                    and kadaluarsaBaru[4] == "-"
+                                    and kadaluarsaBaru[7] == "-"
+                                    and kadaluarsaBaru[:4].isdigit()
+                                    and kadaluarsaBaru[5:7].isdigit()
+                                    and kadaluarsaBaru[8:].isdigit()):
+                                    bulan = int(kadaluarsaBaru[5:7])
+                                    hari = int(kadaluarsaBaru[8:])
+                                    if bulan >= 1 and bulan <= 12 and hari >= 1 and hari <= 31:
+                                        tanggalValid = True
+                                if not tanggalValid:
+                                    print("Format tanggal tidak valid! Contoh: 2000-01-31")
+
+                            konsumsiInput = input("Masukkan jumlah obat yang sudah dikonsumsi: ")
+                            while not konsumsiInput.isdigit() or int(konsumsiInput) > stokBaru:
+                                print("Harus berupa angka dan tidak boleh melebihi stok awal!")
+                                konsumsiInput = input("Masukkan jumlah obat yang sudah dikonsumsi")
+                            konsumsiBaru = int(konsumsiInput)
+                           
                             dataObat[indeks][0] = namaBaru
                             dataObat[indeks][1] = stokBaru
                             dataObat[indeks][2] = kadaluarsaBaru
@@ -178,32 +284,35 @@ while True:
                             print("Pilihan tidak valid!")
                     else:
                         print("Nomor obat tidak valid!")
-                else:
-                    print("Nomor obat tidak valid!")
             else:
-                print("\nAkses ditolak! Menu ini khusus admin.")    
+                print("\nAkses ditolak! Menu ini khusus admin.")
+
             input("\nTekan Enter untuk kembali...")
 
         elif pilihanMenu == "4":
             if role == "admin":
                 print("\n--- HAPUS DATA OBAT ---")
+
                 i = 0
                 while i < len(dataObat):
                     print(f"{i+1:>2}). {dataObat[i][0]}")
                     i = i +1
 
-                indeks = int(input("Pilih nomor obat yang mau dihapus: ")) - 1
+                indeksInput = input("Pilih nomor obat yang mau dihapus: ")
 
-                if indeks >= 0:
-                    if indeks < len(dataObat):
+                if not indeksInput.isdigit():
+                    print("Input harus berupa angka!")
+                else:
+                    indeks = int(indeksInput) - 1
+
+                    if indeks >= 0 and indeks < len(dataObat):
                         obatDihapus = dataObat.pop(indeks)
                         print(f"Data obat '{obatDihapus[0]}' berhasil dihapus!")
                     else:
-                        print("Nomor obat tidak valid!")
-                else:
-                    print("Nomor obat tidak valid!") 
+                        print("Nomor obat tidak valid!")               
             else:
                 print("\nAkses ditolak! Menu ini khusus admin.")
+
             input("\nTekan Enter untuk kembali...")
 
         elif pilihanMenu == "5":
