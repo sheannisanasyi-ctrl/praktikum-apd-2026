@@ -64,7 +64,6 @@ while True:
                 if akun[0] == usernameBaru:
                     usernameSudahAda = True
 
-
             if usernameBaru == "":
                 print("Username tidak boleh kosong!")
             elif passwordBaru == "":
