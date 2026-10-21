@@ -90,14 +90,20 @@ while True:
             input("\nTekan Enter untuk melanjutkan...")
 
     else:
-        print(f"\n===  DATA STOK OBAT (Login sebagai {role}) ===")
-        print("1. Lihat Data Obat")
-        print("2. Tambah Data Obat")
-        print("3. Ubah Data Obat")
-        print("4. Hapus Data Obat")
-        print("5. Logout")
-        pilihanMenu = input("Masukkan pilihan (1-5): ")
-
+        if role == "admin":
+            print(f"\n===  DATA STOK OBAT (Login sebagai {role}) ===")
+            print("1. Lihat Data Obat")
+            print("2. Tambah Data Obat")
+            print("3. Ubah Data Obat")
+            print("4. Hapus Data Obat")
+            print("5. Logout")
+            pilihanMenu = input("Masukkan pilihan (1-5): ")
+        else:
+            print(f"\n===  DATA STOK OBAT (Login sebagai {role}) ===")
+            print("1. Lihat Data Obat")
+            print("2. Logout")
+            pilihanMenu = input("Masukkan pilihan (1-2): ")
+             
         if pilihanMenu == "1":
             if os.name == "nt":
                 os.system("cls")
@@ -118,10 +124,9 @@ while True:
                     print(f"{idObat:<4} | {obat['nama']:<15} | {obat['stok']:<9} | "
                         f"{obat['kadaluarsa']:<18} | {obat['dikonsumsi']:<17} | {stokAkhir}")
 
-                input("\nTekan Enter untuk kembali...")
+            input("\nTekan Enter untuk kembali...")
 
-        elif pilihanMenu == "2":
-            if role == "admin":
+        elif pilihanMenu == "2" and role == "admin":
                 if os.name == "nt":
                     os.system("cls")
                 else:
@@ -175,13 +180,10 @@ while True:
                     "dikonsumsi": konsumsi
                 }
                 print(f"Data obat berhasil ditambahkan dengan ID {idBaru}!")
-            else:
-                print("\nAkses ditolak! Menu ini khusus admin.")
 
-            input("\nTekan Enter untuk kembali...")
+                input("\nTekan Enter untuk kembali...")
 
-        elif pilihanMenu == "3":
-            if role == "admin":
+        elif pilihanMenu == "3" and role == "admin":
                 if os.name == "nt":
                     os.system("cls")
                 else:
@@ -342,13 +344,9 @@ while True:
                         else:
                             print("Pilihan tidak valid!")
 
-            else:
-                print("\nAkses ditolak! Menu ini khusus admin.")
+                input("Tekan Enter untuk kembali...")
 
-            input("Tekan Enter untuk kembali...")
-
-        elif pilihanMenu == "4":
-            if role == "admin":
+        elif pilihanMenu == "4" and role == "admin":
                 if os.name == "nt":
                     os.system("cls")
                 else:
@@ -372,12 +370,9 @@ while True:
                         obatDihapus = dataObat.pop(int(idInput))
                         print(f"Data obat '{obatDihapus['nama']}' berhasil dihapus!")
 
-            else:
-                print("\nAkses ditolak! Menu ini khusus admin.")
+                input("\nTekan Enter untuk kembali...")
 
-            input("\nTekan Enter untuk kembali...")
-
-        elif pilihanMenu == "5":
+        elif (role == "user" and pilihanMenu == "2") or (role == "admin" and pilihanMenu == "5"):
             if os.name == "nt":
                 os.system("cls")
             else:
