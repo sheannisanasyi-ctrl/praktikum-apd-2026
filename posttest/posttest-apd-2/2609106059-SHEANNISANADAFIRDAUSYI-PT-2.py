@@ -32,3 +32,4 @@ print("NIM:", nim)
 print("Bolean (nim < rata-rata):", bolean)
 print(f"Total dalam JPY: {total_jpy:.2f}")
 print("Slice skincare_3 s/d skincare_5:", harga_skincare[-4:-1])
+
