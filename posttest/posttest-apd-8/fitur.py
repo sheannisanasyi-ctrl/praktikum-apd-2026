@@ -88,7 +88,7 @@ def tampilTabelObat():
 
     tabel = PrettyTable()
     tabel.field_names = ["ID", "Nama Obat", "Stok Awal", "Tanggal Kadaluarsa", "Jumlah Dikonsumsi", "Sisa Stok"]
-    tabel.align = "l"
+    tabel.align = "c"
     tabel.hrules = 1
 
     for idObat, obat in dataObat.items():

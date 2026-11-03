@@ -9,7 +9,7 @@ def menuUtama():
 
     tabelMenu = PrettyTable()
     tabelMenu.field_names = ["No", "Menu Utama"]
-    tabelMenu.align = "l"
+    tabelMenu.align = "c"
     tabelMenu.hrules = 1
 
     tabelMenu.add_row(["1", "Login"])
@@ -39,7 +39,7 @@ def menuSetelahLogin(role):
 
     tabelMenu = PrettyTable()
     tabelMenu.field_names = ["No", "Pilihan Menu"]
-    tabelMenu.align = "l"
+    tabelMenu.align = "c"
     tabelMenu.hrules = 1
 
     tabelMenu.add_row(["1", "Lihat Data Obat"])
