@@ -1,13 +1,22 @@
 from helper import bersihkanLayar, tekanEnter
 from autentikasi import prosesLogin, prosesBuatAkun, logout
 from fitur import tampilTabelObat, tambahObat, ubahObat, hapusObat
+from prettytable import PrettyTable
 
 def menuUtama():
     bersihkanLayar()
-    print("=== DATA STOK OBAT ===")
-    print("1. Login")
-    print("2. Buat Akun Baru")
-    print("3. Keluar")
+    print("=== APLIKASI STOK OBAT ===")
+
+    tabelMenu = PrettyTable()
+    tabelMenu.field_names = ["No", "Menu Utama"]
+    tabelMenu.align = "l"
+    tabelMenu.hrules = 1
+
+    tabelMenu.add_row(["1", "Login"])
+    tabelMenu.add_row(["2", "Buat Akun Baru"])
+    tabelMenu.add_row(["3", "Keluar"])
+
+    print(tabelMenu)
     pilihan = input("Masukkan pilihan (1-3): ")
 
     if pilihan == "1":
@@ -27,16 +36,24 @@ def menuUtama():
 def menuSetelahLogin(role):
     bersihkanLayar()
     print(f"\n=== DATA STOK OBAT (Login sebagai {role}) ===")
-    print("1. Lihat Data Obat")
+
+    tabelMenu = PrettyTable()
+    tabelMenu.field_names = ["No", "Pilihan Menu"]
+    tabelMenu.align = "l"
+    tabelMenu.hrules = 1
+
+    tabelMenu.add_row(["1", "Lihat Data Obat"])
+    
     if role == "admin":
-        print("2. Tambah Data Obat")
-        print("3. Ubah Data Obat")
-        print("4. Hapus Data Obat")
-        print("5. Logout")
-        pilihanMenu = input("Masukkan pilihan (1-5): ")
+        tabelMenu.add_row(["2", "Tambah Data Obat"])
+        tabelMenu.add_row(["3", "Ubah Data Obat"])
+        tabelMenu.add_row(["4", "Hapus Data Obat"])
+        tabelMenu.add_row(["5", "Logout"])
     else:
-        print("2. Logout")
-        pilihanMenu = input("Masukkan pilihan (1-2): ")
+        tabelMenu.add_row(["2", "Logout"])
+
+    print(tabelMenu)
+    pilihanMenu = input("Masukkan pilihan: ")
 
     if pilihanMenu == "1":
         bersihkanLayar()
